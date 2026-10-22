@@ -70,7 +70,7 @@ async function vHome(v) {
   const o = $('#homeOrb'); if (o) new Orb(o);
   requestAnimationFrame(() => document.querySelectorAll('.ring-fg').forEach((r) => { r.style.strokeDashoffset = +r.dataset.c * (1 - +r.dataset.p); }));
   $('#homeOrbBox').onclick = () => Jarvis.orbTap();
-  $('#askForm').onsubmit = (e) => { e.preventDefault(); const q = $('#askInput').value; if (q.trim()) Jarvis.send(q, false); };
+  $('#askForm').onsubmit = (e) => { e.preventDefault(); const q = $('#askInput').value; if (q.trim()) { if (Jarvis.st.agentId !== 'kim') Jarvis.setAgent('kim'); Jarvis.send(q, false); } };
   $('#askMic').onclick = () => Jarvis.startListening();
   renderFocus(); wireBrief();
   if (!t) loadTeam().then(() => route());

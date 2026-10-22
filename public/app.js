@@ -137,7 +137,7 @@ function vOverview(v) {
   if (u) barChart($('#ovChart'), days, ['claude', 'codex'], ['var(--claude)', 'var(--codex)']);
   const ho = $('#heroOrb'); if (ho) new Orb(ho);
   $('#heroOrbBox').onclick = () => Jarvis.orbTap();
-  $('#askForm').onsubmit = (e) => { e.preventDefault(); const q = $('#askInput').value; if (q.trim()) Jarvis.send(q, false); };
+  $('#askForm').onsubmit = (e) => { e.preventDefault(); const q = $('#askInput').value; if (q.trim()) { if (Jarvis.st.agentId !== 'kim') Jarvis.setAgent('kim'); Jarvis.send(q, false); } };
   $('#askMic').onclick = () => Jarvis.startListening();
 }
 
