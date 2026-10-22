@@ -1,0 +1,11 @@
+
+/* Keep project metadata and the update prompt within the mobile viewport. */
+.project-heading {display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:12px;min-width:0}
+.project-heading .hero-eyebrow {margin:0;min-width:0;overflow-wrap:anywhere}
+.project-heading #editProj {flex:0 0 auto;margin:0}
+.hero-main,.hero-side,#impBox,.rule,.rule-h {min-width:0}
+.hero-main .mono,.hero-desc,.hero-title,#impBox .mono {white-space:normal!important;overflow-wrap:anywhere;word-break:normal;max-width:100%}
+#impBox .grid {min-width:0}
+#impBox .rule-h b {min-width:0;overflow-wrap:anywhere}
+#newVer.btn {position:fixed!important;inset:auto auto calc(env(safe-area-inset-bottom, 0px) + 106px) 50%!important;transform:translateX(-50%)!important;width:max-content!important;max-width:calc(100vw - 32px)!important;height:auto!important;min-height:44px;max-height:110px;margin:0!important;padding:12px 18px!important;white-space:normal!important;text-align:center;line-height:1.4;border-radius:18px;z-index:90;box-sizing:border-box}
+@media(min-width:901px){#newVer.btn{bottom:24px!important}}

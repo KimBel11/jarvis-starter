@@ -1,0 +1,13 @@
+{
+  "name": "jarvis-starter",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Your personal command center for AI agents, projects and notes.",
+  "scripts": {
+    "start": "node server.js",
+    "setup": "node setup.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

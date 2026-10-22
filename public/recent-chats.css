@@ -1,0 +1,32 @@
+/* Last conversation widget (desktop pocket + phone card) */
+.desktop-chat-pocket{display:none}
+body.graph-home .desktop-chat-pocket{display:block;align-self:flex-start;margin:0;max-width:460px;width:100%;color:var(--muted);font-size:11px}
+.desktop-chat-pocket>summary{white-space:nowrap;cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:9px;padding:9px 0;min-height:36px;max-width:100%}
+.desktop-chat-pocket>summary::-webkit-details-marker{display:none}
+.desktop-chat-pocket>summary::before{content:'↺';font-size:16px;color:var(--muted)}
+.desktop-chat-pocket>summary::after{content:'＋';margin-left:6px;color:var(--dim)}
+.desktop-chat-pocket[open]>summary::after{content:'−'}
+.rc-sub{color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px}
+.rc-list{display:grid;gap:4px;margin:6px 0 0;padding:8px;background:var(--bg2);border:1px solid var(--line);border-radius:16px;max-height:min(340px,46vh);overflow:auto;text-align:left}
+.rc-list[hidden]{display:none}
+.rc-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:11px;align-items:center;text-align:left;padding:9px 10px;border-radius:12px;border:1px solid transparent;background:transparent;color:var(--text);cursor:pointer;font:inherit;width:100%}
+.rc-row:hover,.rc-row:focus-visible{border-color:var(--line2);background:rgba(255,255,255,.04);outline:0}
+.rc-glyph{width:30px;height:30px;border-radius:10px;display:grid;place-items:center;font-size:14px;background:color-mix(in srgb,var(--c) 18%,transparent);color:var(--c)}
+.rc-t{min-width:0;display:grid;gap:2px}.rc-t b{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rc-t small{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rc-m{display:grid;justify-items:end;gap:2px;font-size:11px;color:var(--muted);white-space:nowrap}.rc-m small{color:var(--dim);font-size:10px}
+.rc-live{display:inline-block;width:7px;height:7px;border-radius:50%;background:#35d49a;margin-right:5px;box-shadow:0 0 8px #35d49a88;animation:rcb 1.2s infinite}@keyframes rcb{50%{opacity:.35}}
+.rc-empty{padding:14px;color:var(--muted);font-size:12px;line-height:1.45}
+/* phone card */
+.rc-card{flex-wrap:wrap}.rc-card .rc-list{flex:1 1 100%;margin-top:4px}.rc-card .rc-last{display:block;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:800px){.rc-row{padding:11px 10px}.rc-card .rc-open{min-width:84px}}
+
+/* desktop: the list floats above the pocket (placed by script): underneath the pocket when there is room */
+.desktop-chat-pocket .rc-list.rc-float{position:fixed;margin:0;z-index:60;width:min(430px,88vw);box-shadow:0 18px 60px #000a}
+.desktop-chat-pocket .rc-sub{max-width:190px}
+/* inside the phone card the generic brief-button rules must not squash the rows */
+.home-daily-brief.rc-card .rc-row{display:grid;min-width:0;min-height:0;justify-content:stretch;justify-items:stretch;text-align:left;width:100%;padding:10px}
+.home-daily-brief.rc-card .rc-glyph{width:30px;height:30px;min-width:30px;flex:none}
+.home-daily-brief.rc-card .rc-t{text-align:left;justify-items:start}.home-daily-brief.rc-card .rc-t b,.home-daily-brief.rc-card .rc-t small{text-align:left}
+.home-daily-brief.rc-card .rc-m{min-width:0;justify-items:end}
+.rc-row .rc-t{min-width:0;overflow:hidden}.rc-row .rc-t b,.rc-row .rc-t small{display:block;max-width:100%}
+.home-daily-brief.rc-card .rc-row{grid-template-columns:30px minmax(0,1fr) auto;column-gap:11px}

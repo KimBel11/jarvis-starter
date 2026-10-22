@@ -1,0 +1,16 @@
+'use strict';
+(() => {
+ let client=null;const pending=new Map();
+ const mobile=()=>!window.__jarvisDesktop&&matchMedia('(max-width:800px)').matches;
+ function native(command){return new Promise((resolve,reject)=>{const id=command.id||crypto.randomUUID();const timer=setTimeout(()=>{pending.delete(id);reject(Error('The desktop browser did not respond.'));},60000);pending.set(id,{resolve,reject,timer});window.webkit.messageHandlers.native.postMessage({type:'workspace',...command,id});});}
+ window.addEventListener('jarvis:workspace-result',e=>{const d=e.detail,w=pending.get(d?.id);if(!w)return;pending.delete(d.id);clearTimeout(w.timer);d.ok?w.resolve(d.result||{}):w.reject(Error(d.error||'Browser action failed'));});
+ async function execute(command){if(command.action==='open-tool'){if(mobile())return {background:true};if(!window.JarvisTools)throw Error('Tool workspace is unavailable');JarvisTools.open(command.tool,{project:command.project});return {tool:command.tool,opened:true};}if(!window.__jarvisWorkspace)throw Error('The native browser needs the updated Jarvis Mac app.');if((command.action==='open'||command.action==='list'||command.windowId)&&!window.__jarvisMultiBrowser)throw Error('Quit and reopen the updated Jarvis Mac app to use multiple browser windows.');return native(command);}
+ const stream=new EventSource('/api/desktop-workspace/events?native='+(window.__jarvisWorkspace?'1':'0')+'&mobile='+(mobile()?'1':'0'));
+ stream.addEventListener('ready',e=>{client=JSON.parse(e.data).client;});
+ stream.addEventListener('command',async e=>{const command=JSON.parse(e.data);let reply;try{reply={ok:true,result:await execute(command)};}catch(error){reply={ok:false,error:error.message};}try{await post('/api/desktop-workspace/result',{id:command.id,client,...reply});}catch{}});
+ async function open(url,options={}){try{if(window.__jarvisWorkspace)return await execute({action:'open',url,present:options.present!==false&&!mobile()});const r=await post('/api/desktop-workspace/command',{action:'open',url,present:options.present!==false&&!mobile()});toast(mobile()?'Browser opened in the background.':'Browser opened in the background. Use the updated Jarvis Mac app to see it inside Jarvis.');return r.result;}catch(e){toast(e.message);throw e;}}
+ document.addEventListener('click',e=>{const a=e.target.closest('a[href]');if(!a||a.hasAttribute('download'))return;let u;try{u=new URL(a.href,location.href);}catch{return;}if(!['http:','https:'].includes(u.protocol)||u.origin===location.origin)return;e.preventDefault();e.stopImmediatePropagation();void open(u.href).catch(()=>{});},true);
+ const priorOpen=window.open;window.open=function(url,...args){let u;try{u=new URL(url,location.href);}catch{return priorOpen.call(window,url,...args);}if(['http:','https:'].includes(u.protocol)&&u.origin!==location.origin){void open(u.href).catch(()=>{});return null;}return priorOpen.call(window,url,...args);};
+ // Browser windows and tool panels remain independent; opening one does not hide the others.
+ window.JarvisWorkspace={open,command:execute,list:()=>execute({action:'list'}),navigate:(windowId,url)=>execute({action:'navigate',windowId,url}),restore:windowId=>execute({action:'restore',windowId}),close:windowId=>execute({action:'close',windowId})};
+})();

@@ -1,0 +1,24 @@
+.lead-control{width:min(100%,420px);margin:0 auto 22px;text-align:left}
+.lead-row{display:flex;align-items:center;justify-content:space-between;gap:16px}.lead-label{font-size:12px;font-weight:600;color:var(--text)}.lead-label span{display:block;color:var(--muted);font-size:10px;font-weight:400;margin-top:2px}
+.lead-options{display:flex;gap:3px;padding:3px;background:var(--panel);border:1px solid var(--line);border-radius:14px}
+.lead-options button{appearance:none;min-height:38px;min-width:80px;padding:8px 16px;background:transparent;color:var(--muted);border:1px solid transparent;border-radius:10px;font:inherit;font-size:12px;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.lead-options button[aria-pressed=true]{color:var(--text);background:color-mix(in srgb,var(--cyan) 10%,var(--panel2));border-color:color-mix(in srgb,var(--cyan) 24%,var(--line))}
+.lead-options button:focus-visible,.lead-caption button:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}.lead-options button:disabled{cursor:default;opacity:.6}
+.lead-caption{display:flex;gap:8px;align-items:center;justify-content:flex-end;min-height:20px;margin-top:5px;font-size:10px;color:var(--muted)}.lead-caption button{background:none;border:0;color:var(--cyan);cursor:pointer;font:inherit;text-decoration:underline}.lead-error{color:var(--bad,#f28d94)}
+.lead-control[hidden],.lead-caption button[hidden]{display:none!important}#jPanel>.lead-control{width:auto;margin:0 18px 14px}body.graph-home #jPanel>.lead-control{display:none}
+#kimLeadSettings{padding:18px;border:1px solid var(--line);border-radius:16px;margin:16px 0}#kimLeadSettings .lead-control{margin-bottom:6px}#kimLeadSettings p{font-size:12px;color:var(--muted);margin:6px 0 0}
+@media(max-width:600px){.lead-control{margin-bottom:20px}.lead-options button{min-height:42px;min-width:76px;padding:8px 12px}.lead-row{gap:12px}}
+@media(prefers-reduced-motion:reduce){.lead-options button{transition:none}}
+
+/* Centered, theme-aware lead control shared by home and conversation settings. */
+.lead-control .lead-row{justify-content:center;gap:14px}
+.lead-control .lead-label{text-align:right;letter-spacing:.02em}
+.lead-control .lead-options{background:linear-gradient(135deg,color-mix(in srgb,var(--cyan) 6%,var(--panel)),var(--panel));box-shadow:0 8px 26px #0002;border-color:color-mix(in srgb,var(--cyan) 18%,var(--line));padding:4px;border-radius:17px}
+.lead-control .lead-options button{position:relative;border-radius:12px;transition:transform .23s,box-shadow .23s,border-color .23s,background .23s,color .23s}
+.lead-control .lead-options button[data-lead=claude]{--lead-tone:#e7b18a}
+.lead-control .lead-options button[data-lead=codex]{--lead-tone:var(--cyan)}
+.lead-control .lead-options button[aria-pressed=true]{color:var(--text);border-color:color-mix(in srgb,var(--lead-tone) 50%,var(--line));background:color-mix(in srgb,var(--lead-tone) 16%,var(--panel2));box-shadow:inset 0 1px 0 #ffffff14,0 3px 12px color-mix(in srgb,var(--lead-tone) 12%,transparent)}
+.lead-control .lead-caption{justify-content:center;text-align:center}
+@media(hover:hover){.lead-control .lead-options button:not(:disabled):hover{transform:translateY(-2px);color:var(--text);border-color:var(--lead-tone);box-shadow:0 5px 18px color-mix(in srgb,var(--lead-tone) 20%,transparent)}}
+.lead-control .lead-options button:not(:disabled):active{transform:scale(.97)}
+@media(prefers-reduced-motion:reduce){.lead-control .lead-options button{transition:none}.lead-control .lead-options button:not(:disabled):hover,.lead-control .lead-options button:not(:disabled):active{transform:none}}

@@ -1,0 +1,11 @@
+data/
+backups/
+*.log
+.env
+.env.*
+*.p8
+*.pem
+build*/
+DerivedData/
+xcuserdata/
+.DS_Store
