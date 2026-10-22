@@ -6,7 +6,7 @@
   const E = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const ago = (t) => { const m = Math.max(0, (Date.now() - t) / 60000); if (m < 1) return 'just now'; if (m < 60) return Math.round(m) + ' min ago'; const h = m / 60; if (h < 24) return Math.round(h) + ' h ago'; const d = h / 24; return d < 7 ? Math.round(d) + ' d ago' : new Date(t).toLocaleDateString(); };
   let chats = [], loading = false;
-  const agentOf = (id) => { try { return (window.S && S.team && S.team.agents || []).find((a) => a.id === id) || null; } catch { return null; } };
+  const agentOf = (id) => { try { return (typeof S !== 'undefined' && S.team && S.team.agents || []).find((a) => a.id === id) || null; } catch { return null; } };
   async function load() {
     if (loading) return chats; loading = true;
     try { const r = await fetch('/api/convos/recent?limit=8', { cache: 'no-store' }); if (r.ok) chats = (await r.json()).chats || []; } catch {} finally { loading = false; }

@@ -1,5 +1,5 @@
 /* Home-page approval cards. Flat, no shadows; uses the app's colour variables so light and dark both match the composer and the agent windows. */
-.ap-root{position:fixed;z-index:80;top:calc(76px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);width:min(460px,calc(100vw - 24px));max-height:calc(100vh - 110px);display:flex;flex-direction:column;gap:8px;pointer-events:none;font-size:13px;color:var(--text)}
+.ap-root{position:fixed;z-index:80;top:calc(120px + env(safe-area-inset-top));right:16px;width:min(420px,calc(100vw - 24px));max-height:calc(100vh - 150px);display:flex;flex-direction:column;gap:8px;pointer-events:none;font-size:13px;color:var(--text)}
 .ap-root[hidden],.ap-bar[hidden],.ap-root [hidden]{display:none!important}
 .ap-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .ap-stack{display:flex;flex-direction:column;gap:8px;min-height:0;overflow-y:auto;overscroll-behavior:contain;pointer-events:none;padding:1px}
@@ -63,7 +63,7 @@
 .ap-ib:focus-visible,.ap-btn:focus-visible,.ap-barbtn:focus-visible,.ap-full:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 
 @media (max-width:800px){
-  .ap-root{top:calc(60px + env(safe-area-inset-top));max-height:calc(100vh - 130px)}
+  .ap-root{top:calc(60px + env(safe-area-inset-top));left:12px;right:12px;width:auto;max-height:calc(100vh - 130px)}
   .ap-btn{height:46px;flex:1 1 auto}
   .ap-btn.small{height:44px}
   .ap-ib{width:44px;height:44px}

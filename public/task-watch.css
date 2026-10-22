@@ -103,6 +103,8 @@
 
 /* phone: one window at a time, full-screen sheet */
 @media (max-width:800px){
+  /* the full-screen window must sit above the Alerts button, or the Alerts button covers the minimise/close buttons */
+  .jw-root{z-index:140}
   .jw-win{inset:0!important;left:0!important;top:0!important;width:auto!important;height:auto!important;max-height:none;border:0;border-radius:0;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);z-index:70!important}
   .jw-head{cursor:default;padding:10px 8px 10px 12px}
   .jw-ib{width:44px;height:44px}

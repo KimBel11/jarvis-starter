@@ -30,3 +30,6 @@ body.graph-home .desktop-chat-pocket{display:block;align-self:flex-start;margin:
 .home-daily-brief.rc-card .rc-m{min-width:0;justify-items:end}
 .rc-row .rc-t{min-width:0;overflow:hidden}.rc-row .rc-t b,.rc-row .rc-t small{display:block;max-width:100%}
 .home-daily-brief.rc-card .rc-row{grid-template-columns:30px minmax(0,1fr) auto;column-gap:11px}
+/* an agent opened from an alert lights up for a few seconds */
+.acard.ap-focus{box-shadow:0 0 0 2px var(--cyan),0 0 34px color-mix(in srgb,var(--cyan) 35%,transparent);animation:apf 1.2s ease-in-out 3}
+@keyframes apf{50%{box-shadow:0 0 0 3px var(--cyan),0 0 52px color-mix(in srgb,var(--cyan) 55%,transparent)}}

@@ -60,9 +60,10 @@ final class CarPlaySceneDelegate: UIResponder, CPTemplateApplicationSceneDelegat
 
     private func state(_ id: String, _ titles: [String], _ mode: CarArt.Mode, _ bg: CarBackground, repeats: Bool = true) -> CPVoiceControlState {
         let st: CPVoiceControlState
+        let probe = CarArt.orb(mode, bg); CarLog.write("orb \(id): size=\(probe.size) scale=\(probe.scale) frames=\(probe.images?.count ?? 1)")
         if #available(iOS 27.0, *) {
-            // the orb IS the background (the state image can only be tiny), so it is big and impossible to miss
-            st = CPVoiceControlState(identifier: id, titleVariants: titles, image: nil, backgroundImage: CarArt.scene(mode, bg), repeats: repeats)
+            // a bright, thick orb as the state image (CarPlay shows it centred, up to 150 pt) on a dark backdrop so it stands out
+            st = CPVoiceControlState(identifier: id, titleVariants: titles, image: CarArt.orb(mode, bg), backgroundImage: CarArt.backdrop(bg), repeats: repeats)
         } else {
             st = CPVoiceControlState(identifier: id, titleVariants: titles, image: CarArt.orb(mode, bg), repeats: repeats)
         }

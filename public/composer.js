@@ -34,9 +34,38 @@ function upload(file) {
 }
 function addFiles(list) { for (const f of [...list]) upload(f); }
 
+// Unsent text is kept on this device, one draft per conversation: the home box is "home", the chat panel is "chat:<agent>".
+const DKEY = 'jarvis.draft.', flushers = new Set(); let sentDraft = null; // sentDraft: the message last taken out of a box, until its send is accepted
+const draftId = (form) => (form.id === 'jForm' ? 'chat:' + ((window.Jarvis && Jarvis.st && Jarvis.st.agentId) || 'kim') : form.id === 'askForm' ? 'home' : null);
+const readDraft = (id) => { try { return localStorage.getItem(DKEY + id) || ''; } catch { return ''; } };
+const writeDraft = (id, v) => { try { if (v) localStorage.setItem(DKEY + id, String(v).slice(0, 20000)); else localStorage.removeItem(DKEY + id); } catch {} };
+const flushAll = () => flushers.forEach((f) => f());
+window.addEventListener('pagehide', flushAll); document.addEventListener('visibilitychange', () => { if (document.hidden) flushAll(); });
+// A send that was accepted (reply, or queued) clears the draft for good; a failed send puts the text back.
+window.addEventListener('jarvis:reply', () => { sentDraft = null; }); window.addEventListener('jarvis:enqueue', () => { sentDraft = null; });
+window.addEventListener('jarvis:failed', () => {
+  const s = sentDraft; sentDraft = null; if (!s || Date.now() - s.at > 60000) return;
+  if (!readDraft(s.id)) writeDraft(s.id, s.value);
+  if (s.text.isConnected && !s.text.value && s.text.dataset.draftId === s.id) { s.text.value = s.value; s.text.dispatchEvent(new Event('input', { bubbles: true })); }
+});
+function keepDraft(form, text) {
+  let id = draftId(form); if (!id) return;
+  let timer = 0, restoring = false, sentValue = null; text.dataset.draftId = id; // sentValue: text that was just sent and is still showing in the box; it is not a draft
+  const flush = () => { clearTimeout(timer); timer = 0; if (!restoring && text.value !== sentValue) writeDraft(id, text.value); if (!text.isConnected) flushers.delete(flush); };
+  const load = () => { restoring = true; sentValue = null; text.value = readDraft(id); text.dispatchEvent(new Event('input', { bubbles: true })); restoring = false; };
+  flushAll(); flushers.add(flush); if (!text.value) load();
+  text.addEventListener('input', () => { if (restoring) return; if (text.value !== sentValue) sentValue = null; clearTimeout(timer); timer = setTimeout(flush, 300); });
+  form.addEventListener('submit', () => { const v = text.value; if (!v.trim()) return; clearTimeout(timer); timer = 0; sentValue = v; sentDraft = { id, value: v, text, at: Date.now() }; writeDraft(id, ''); }, true);
+  if (form.id === 'jForm') window.addEventListener('jarvis:conversation-changed', () => {
+    const next = draftId(form); if (!next || next === id || !text.isConnected) return;
+    flush(); id = next; text.dataset.draftId = id; load();
+  });
+}
+
 function upgrade(form) {
   if (!form || form.dataset.cmp) return; form.dataset.cmp = '1'; form.classList.add('cmp');
   const text = form.querySelector('textarea') || form.querySelector('input[type=text], input:not([type]):not([type=file])'); if (!text) return;
+  keepDraft(form, text);
   const mic = form.querySelector('#jMic, #askMic, .mic'); const send = form.querySelector('.ask-send, #jSend, button[type=submit], button.primary');
   const strip = document.createElement('div'); strip.className = 'cmp-files'; strip.hidden = true;
   const row = document.createElement('div'); row.className = 'cmp-row';

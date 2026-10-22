@@ -48,7 +48,7 @@
   const acts = h('div', 'ap-row ap-actions'), go = h('button', 'ap-btn primary', 'Approve'), back2 = h('button', 'ap-btn', 'Back'), no = h('button', 'ap-btn', 'Decline'), view = h('button', 'ap-btn', 'View plan');
   go.type = back2.type = no.type = view.type = 'button'; back2.hidden = true; view.setAttribute('aria-controls', full.id); view.setAttribute('aria-expanded', 'false'); acts.append(go, back2, no, view);
   body.append(engine, sum, willH, will, cost, full, live, dec, msg, acts); el.append(head, body);
-  const c = { id: t.id, uid, el, t, open: !stack.querySelector('.ap-card:not([data-collapsed])'), plan: false, declining: false, confirming: false, busy: false, result: '', timer: 0, ct: 0, r: { dot, agent, task, tag, toggle, chev, body, engine, sum, willH, will, cost, full, fullTxt, live, openWin, dec, reason, doDecline, back1, back2, msg, acts, go, no, view } };
+  const c = { id: t.id, uid, el, t, open: false, plan: false, declining: false, confirming: false, busy: false, result: '', timer: 0, ct: 0, r: { dot, agent, task, tag, toggle, chev, body, engine, sum, willH, will, cost, full, fullTxt, live, openWin, dec, reason, doDecline, back1, back2, msg, acts, go, no, view } };
   toggle.onclick = () => { c.open = !c.open; if (!c.open) reset(c); paint(c); };
   head.addEventListener('click', (e) => { if (!c.open && !e.target.closest('button')) { c.open = true; paint(c); } });
   view.onclick = () => { c.plan = !c.plan; paint(c); };

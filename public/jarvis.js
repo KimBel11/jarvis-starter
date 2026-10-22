@@ -352,20 +352,24 @@ const Jarvis = (() => {
   /* ================= UI ================= */
   function fillProjectSelect() { const s = $$('#jProject'); if (!s) return; s.innerHTML = '<option value="all">Whole drive</option>' + S.projects.map((p) => `<option value="${esc(p.id)}">${esc(p.name)}</option>`).join(''); s.value = S.projects.some((p) => p.id === ST.project) ? ST.project : 'all'; ST.project = s.value; }
   function fillAgentSelect() { const s = $$('#jAgent'); if (!s) return; const ag = (S.team && S.team.agents) || [{ id: 'kim', name: '@@ASSISTANT@@', glyph: '✦' }]; s.innerHTML = ag.map((a) => `<option value="${esc(a.id)}">${esc(a.glyph)} ${esc(a.name)}</option>`).join('') + '<option value="raw-claude">Claude (plain)</option><option value="raw-codex">Codex (plain)</option>'; s.value = ST.agentId; if (s.value !== ST.agentId) { ST.agentId = 'kim'; s.value = 'kim'; } const t = $$('#jTitle'); if (t) t.textContent = agentMeta().name; }
-  function open(focusInput = true) { if (ST.open) return; ST.open = true; const p = $$('#jPanel'); p.hidden = false; requestAnimationFrame(() => p.classList.add('in')); fillProjectSelect(); fillAgentSelect(); checkVoice(); document.body.classList.add('j-open'); if (focusInput) setTimeout(() => { if (ST.open && !isActive()) $$('#jText') && $$('#jText').focus(); }, 250); }
-  // Moving to another section hides the conversation panel (a voice conversation itself keeps going)
-  window.addEventListener('hashchange', () => { if (ST.open) close(); });
+  function open(focusInput = true) { if (ST.open) return; ST.open = true; rememberPanel(true); const p = $$('#jPanel'); p.hidden = false; requestAnimationFrame(() => p.classList.add('in')); fillProjectSelect(); fillAgentSelect(); checkVoice(); document.body.classList.add('j-open'); if (focusInput) setTimeout(() => { if (ST.open && !isActive()) $$('#jText') && $$('#jText').focus(); }, 250); }
+  // The conversation panel stays as @@NAME@@ left it when moving between sections; only the close button, Esc or the toggle closes it.
+  // Open or closed is remembered on this device. A page unload (including a conversation scene tearing down) never counts as @@NAME@@ closing it.
+  let unloading = false; window.addEventListener('pagehide', () => { unloading = true; }); window.addEventListener('pageshow', () => { unloading = false; });
+  const rememberPanel = (on) => { if (!unloading) store.set('panelOpen', on); };
+  // Tells the message box which conversation it is showing, so each one keeps its own unsent text.
+  const conversationChanged = () => window.dispatchEvent(new CustomEvent('jarvis:conversation-changed', { detail: { agentId: ST.agentId } }));
   // Open an earlier conversation in the chat panel and carry on where it stopped (same agent, folder and session).
   function resumeConversation(c) {
     if (!c) return; cancel();
-    ST.agentId = c.agentId || 'kim'; try { store.set('agentId', ST.agentId); } catch {} ST.project = c.project || 'all';
+    ST.agentId = c.agentId || 'kim'; try { store.set('agentId', ST.agentId); } catch {} ST.project = c.project || 'all'; conversationChanged();
     open(false);
     const a = $$('#jAgent'); if (a) a.value = ST.agentId; const pr = $$('#jProject'); if (pr) pr.value = ST.project; const ti = $$('#jTitle'); if (ti) ti.textContent = agentMeta().name; try { setModel(); syncEnhance(); } catch {}
     const sid = c.sessions && (c.sessions[c.activeEngine] || Object.values(c.sessions)[0]); const key = ST.agentId + ':' + ST.project; if (sid) { ST.sessions[key] = sid; storeSessions(); }
     const log = $$('#jLog'); if (log) { log.innerHTML = ''; for (const m of (c.messages || []).filter((x) => x.role !== 'note').slice(-40)) addMsg(m.role === 'user' ? 'user' : 'ai', md(m.role === 'user' ? String(m.text || '').replace(/^\[[^\]]{0,400}(driving|Apple Watch|Answer in)[^\]]{0,400}\]\s*/, '') : (m.text || ''))); addMsg('note', 'Earlier conversation: ' + escH(c.title || '') + '. Carry on below.'); log.scrollTop = log.scrollHeight; }
     const pan = $$('#jPanel'); if (pan) pan.scrollTop = 0; const inp = $$('#jText'); if (inp) setTimeout(() => { inp.focus({ preventScroll: true }); if (pan) pan.scrollTop = 0; }, 150);
   }
-  function close() { ST.open = false; const p = $$('#jPanel'); p.classList.remove('in'); document.body.classList.remove('j-open'); if (!ST.busy && ST.pending === 0) setState('idle'); setTimeout(() => { if (!ST.open) p.hidden = true; }, 320); }
+  function close() { ST.open = false; rememberPanel(false); const p = $$('#jPanel'); p.classList.remove('in'); document.body.classList.remove('j-open'); if (!ST.busy && ST.pending === 0) setState('idle'); setTimeout(() => { if (!ST.open) p.hidden = true; }, 320); }
   function toggle() { ST.open ? close() : open(); }
   function build() {
     const fab = document.createElement('button'); fab.id = 'jFab'; fab.className = 'fab'; fab.title = 'Talk to @@ASSISTANT@@ (J)'; fab.innerHTML = '<canvas></canvas><span id="jBadge" class="fab-badge" hidden></span>'; document.body.appendChild(fab);
@@ -390,7 +394,7 @@ const Jarvis = (() => {
     $$('#jForm').onsubmit = (e) => { e.preventDefault(); send($$('#jText').value, false); };
     const syncEnhance = () => { $$('#jEnhance').checked = store.get('enhancePrompts.' + ST.agentId + ':' + ST.project, false); }; syncEnhance();
     $$('#jEnhance').onchange = (e) => store.set('enhancePrompts.' + ST.agentId + ':' + ST.project, e.target.checked);
-    $$('#jAgent').onchange = (e) => { ST.agentId = e.target.value; store.set('agentId', ST.agentId); $$('#jTitle').textContent = agentMeta().name; setModel(); syncEnhance(); };
+    $$('#jAgent').onchange = (e) => { ST.agentId = e.target.value; store.set('agentId', ST.agentId); $$('#jTitle').textContent = agentMeta().name; setModel(); syncEnhance(); conversationChanged(); };
     $$('#jProject').onchange = (e) => { ST.project = e.target.value; syncEnhance(); };
     $$('#jLang').onchange = (e) => { ST.lang = e.target.value; store.set('lang', ST.lang); };
     $$('#jSpeak').onchange = (e) => setSpeak(e.target.checked);
@@ -411,8 +415,10 @@ const Jarvis = (() => {
     // keep the ElevenLabs voice status fresh (a slow start or a restarted server must never leave Jarvis on the browser voice)
     window.addEventListener('focus', () => { if (!ST.eleven) checkVoice(); }); setInterval(() => { if (!ST.eleven) checkVoice(); }, 60000);
     setState('idle');
+    // On a phone the open panel covers the tab bar and shrinks the orb, so a reload starts with the orb showing; on larger screens the panel comes back as @@NAME@@ left it.
+    if (store.get('panelOpen', false) && !matchMedia('(max-width:800px)').matches) open(false);
   }
-  return { state: 'idle', build, open, close, resumeConversation, send, say, speakReply, stopAudio, setSpeak, unblockAudio: () => Out.unblock(), pauseAudio: () => { stopListening(true); Out.pause(); }, resumeAudio: () => { Out.resume(); armInterruption(); }, attach, addAttach, removeAttach, getAttach: () => ST.attach.slice(), startListening, stopListening, stop: stopSpeech, pause:()=>{stopListening(true);Out.pause();}, resume:()=>{Out.resume();armInterruption();}, orbTap, toggleVoice: orbTap, cancel, suspendVoice, isActive, setModel, checkVoice, refreshAgents: fillAgentSelect, setProject(id) { ST.project = id; fillProjectSelect(); }, setAgent(id) { ST.agentId = id; store.set('agentId', id); fillAgentSelect(); setModel(); }, get st() { return ST; } };
+  return { state: 'idle', build, open, close, resumeConversation, send, say, speakReply, stopAudio, setSpeak, unblockAudio: () => Out.unblock(), pauseAudio: () => { stopListening(true); Out.pause(); }, resumeAudio: () => { Out.resume(); armInterruption(); }, attach, addAttach, removeAttach, getAttach: () => ST.attach.slice(), startListening, stopListening, stop: stopSpeech, pause:()=>{stopListening(true);Out.pause();}, resume:()=>{Out.resume();armInterruption();}, orbTap, toggleVoice: orbTap, cancel, suspendVoice, isActive, setModel, checkVoice, refreshAgents: fillAgentSelect, setProject(id) { ST.project = id; fillProjectSelect(); }, setAgent(id) { ST.agentId = id; store.set('agentId', id); fillAgentSelect(); setModel(); conversationChanged(); }, get st() { return ST; } };
 })();
 window.Jarvis = Jarvis;
 Jarvis.build();

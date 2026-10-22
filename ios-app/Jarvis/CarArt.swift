@@ -53,7 +53,7 @@ enum CarArt {
     static func orb(_ mode: Mode, _ bg: CarBackground) -> UIImage {
         let frames = mode == .error ? 1 : 30
         let duration: Double = { switch mode { case .idle: return 4.5; case .listening: return 1.6; case .thinking: return 2.4; case .speaking: return 1.2; case .error: return 1 } }()
-        let side: CGFloat = 150, scale: CGFloat = 3
+        let side: CGFloat = 150, scale: CGFloat = 2
         let f = UIGraphicsImageRendererFormat(); f.scale = scale; f.opaque = false
         let r = UIGraphicsImageRenderer(size: CGSize(width: side, height: side), format: f)
         let col = mode == .error ? UIColor(red: 1, green: 0.36, blue: 0.42, alpha: 1) : bg.accent
@@ -65,16 +65,17 @@ enum CarArt {
                 let g = c.cgContext, cs = CGColorSpaceCreateDeviceRGB(), mid = CGPoint(x: side / 2, y: side / 2)
                 let amp: CGFloat = { switch mode { case .idle: return 0.04; case .listening: return 0.10; case .thinking: return 0.03; case .speaking: return 0.13; case .error: return 0 } }()
                 let pulse = 1 + amp * CGFloat(sin(ph))
-                // core glow
-                let grad = CGGradient(colorsSpace: cs, colors: [col.withAlphaComponent(mode == .listening || mode == .speaking ? 0.55 : 0.32).cgColor, col.withAlphaComponent(0).cgColor] as CFArray, locations: [0, 1])!
-                g.drawRadialGradient(grad, startCenter: mid, startRadius: 0, endCenter: mid, endRadius: 72 * pulse, options: [])
-                // rings
+                // core glow: white-hot centre fading into the accent, so it stands out on any background
+                let hot = UIColor.white
+                let grad = CGGradient(colorsSpace: cs, colors: [hot.withAlphaComponent(0.98).cgColor, col.withAlphaComponent(0.95).cgColor, col.withAlphaComponent(0.0).cgColor] as CFArray, locations: [0, 0.38, 1])!
+                g.drawRadialGradient(grad, startCenter: mid, startRadius: 0, endCenter: mid, endRadius: 74 * pulse, options: [])
+                // rings: thick and bright
                 for k in 0..<3 {
-                    let base: CGFloat = 52 - CGFloat(k) * 8
+                    let base: CGFloat = 55 - CGFloat(k) * 9
                     let wob = mode == .speaking || mode == .listening ? CGFloat(sin(ph + Double(k) * 1.2)) * 3.2 : CGFloat(sin(ph + Double(k))) * 1
                     let rad = base * pulse + wob
-                    g.setLineWidth(k == 2 ? 2.6 : 1.6)
-                    g.setStrokeColor(col.withAlphaComponent(1 - CGFloat(k) * 0.28).cgColor)
+                    g.setLineWidth([4.5, 3.4, 2.4][k]); g.setLineCap(.round)
+                    g.setStrokeColor((k == 0 ? hot : col.blended(with: hot, 0.55)).withAlphaComponent(1 - CGFloat(k) * 0.22).cgColor)
                     if mode == .thinking {
                         let a0 = CGFloat(ph) * (k % 2 == 0 ? 1 : -1) + CGFloat(k)
                         g.addArc(center: mid, radius: rad, startAngle: a0, endAngle: a0 + .pi * 1.4, clockwise: false)
@@ -146,5 +147,29 @@ enum CarArt {
                 }
             }
         }
+    }
+
+    /// A calm dark backdrop with a soft accent glow low on the screen, so the bright orb in front of it stands out.
+    static func backdrop(_ bg: CarBackground) -> UIImage {
+        let size = CGSize(width: 1600, height: 900)
+        let f = UIGraphicsImageRendererFormat(); f.scale = 1; f.opaque = true
+        return UIGraphicsImageRenderer(size: size, format: f).image { c in
+            let g = c.cgContext, cs = CGColorSpaceCreateDeviceRGB()
+            UIColor(red: 0.02, green: 0.027, blue: 0.045, alpha: 1).setFill(); g.fill(CGRect(origin: .zero, size: size))
+            func radial(_ center: CGPoint, _ r: CGFloat, _ col: UIColor, _ a: CGFloat) {
+                let grad = CGGradient(colorsSpace: cs, colors: [col.withAlphaComponent(a).cgColor, col.withAlphaComponent(0).cgColor] as CFArray, locations: [0, 1])!
+                g.drawRadialGradient(grad, startCenter: center, startRadius: 0, endCenter: center, endRadius: r, options: [])
+            }
+            radial(CGPoint(x: 800, y: 980), 900, bg.glow, 0.95)
+            radial(CGPoint(x: 800, y: 420), 520, bg.accent, 0.10)
+        }
+    }
+}
+
+extension UIColor {
+    func blended(with other: UIColor, _ t: CGFloat) -> UIColor {
+        var a: (CGFloat, CGFloat, CGFloat, CGFloat) = (0, 0, 0, 0), b: (CGFloat, CGFloat, CGFloat, CGFloat) = (0, 0, 0, 0)
+        getRed(&a.0, green: &a.1, blue: &a.2, alpha: &a.3); other.getRed(&b.0, green: &b.1, blue: &b.2, alpha: &b.3)
+        return UIColor(red: a.0 + (b.0 - a.0) * t, green: a.1 + (b.1 - a.1) * t, blue: a.2 + (b.2 - a.2) * t, alpha: 1)
     }
 }
