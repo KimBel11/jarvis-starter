@@ -1,0 +1,5 @@
+.jmsg { position: relative; }
+.jmsg .jcopy { position: absolute; top: 6px; right: 6px; width: 26px; height: 26px; display: grid; place-items: center; padding: 0; border: 1px solid rgba(255,255,255,.14); border-radius: 8px; background: rgba(20,24,34,.7); color: inherit; opacity: .55; cursor: pointer; }
+.jmsg:hover .jcopy, .jmsg .jcopy:focus-visible, .jmsg .jcopy.done { opacity: 1; }
+.jmsg .jcopy.done { color: #4ade80; border-color: #4ade80; }
+.jmsg.ai, .jmsg.user { padding-right: 38px; }

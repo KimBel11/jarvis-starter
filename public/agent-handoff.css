@@ -1,0 +1,55 @@
+/* Real handoffs only. The travelling symbol is decorative and never catches input. */
+.ah-courier{position:fixed;z-index:450;display:grid;place-items:center;width:36px;height:36px;border-radius:12px;border:1px solid color-mix(in srgb,var(--cyan) 60%,transparent);color:var(--cyan);background:var(--panel);box-shadow:0 0 24px color-mix(in srgb,var(--cyan) 40%,transparent);pointer-events:none;font-size:22px;}
+.ah-receiving{animation:ah-receive 3s ease-out;}
+@keyframes ah-receive{0%,30%{filter:brightness(1);}65%{filter:brightness(1.7);box-shadow:0 0 28px color-mix(in srgb,var(--cyan) 35%,transparent);}100%{filter:brightness(1);}}
+.home-agent-workflow{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:18px 75px;border-radius:24px;background:radial-gradient(ellipse at center,color-mix(in srgb,var(--cyan) 7%,var(--bg)),var(--bg));animation:ah-enter .4s ease-out;overflow:hidden;}
+.ah-heading{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);text-align:center;}
+.ah-lane{display:grid;grid-template-columns:minmax(0,1fr) 60px minmax(0,1fr);align-items:center;width:100%;max-width:490px;}
+.ah-node{display:flex;flex-direction:column;gap:8px;align-items:center;text-align:center;min-width:0;}
+.ah-node .an-symbol{width:46px;height:46px;display:grid;place-items:center;border:1px solid var(--line);border-radius:15px;color:var(--cyan);background:var(--panel);font-size:22px;}
+.ah-node strong{font-size:12px;line-height:1.4;overflow-wrap:anywhere;}
+.ah-track{height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:.45;}
+.ah-status{font-size:11px!important;line-height:1.5;margin:0!important;text-align:center;color:var(--muted);max-width:440px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.home-graph-hero.has-agent-workflow .home-search-layer{opacity:0!important;visibility:hidden!important;}
+.home-graph-hero.has-agent-workflow .home-orb-layer{z-index:3;align-items:flex-end;justify-content:flex-start;pointer-events:none;padding:8px 14px;}
+.home-graph-hero.has-agent-workflow .home-premium-orb{width:60px!important;height:60px!important;pointer-events:auto;}
+.home-graph-hero.has-agent-workflow .home-premium-orb canvas{width:60px!important;height:60px!important;}
+.home-graph-hero.has-agent-workflow .home-orb-name,.home-graph-hero.has-agent-workflow .home-orb-ring{display:none;}
+@keyframes ah-enter{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+@media(max-width:800px){.home-agent-workflow{padding:12px 48px 12px 12px;gap:8px;}.ah-lane{grid-template-columns:minmax(0,1fr) 26px minmax(0,1fr);}.ah-node .an-symbol{width:36px;height:36px;}.ah-node strong{font-size:10px;}.ah-heading{font-size:9px;}.ah-status{font-size:10px!important;}.home-agent-workflow>.btn{min-height:32px;padding:5px 10px;font-size:11px;}}
+@media(prefers-reduced-motion:reduce){.ah-receiving,.home-agent-workflow{animation:none!important;}}
+
+.ah-team-transfer{position:fixed;z-index:100;display:flex;align-items:center;gap:14px;padding:14px;border-radius:18px;border:1px solid var(--line);background:var(--panel);box-shadow:0 12px 35px #0005;pointer-events:none;box-sizing:border-box;}.ah-team-transfer>div{min-width:0;flex:1;}.ah-team-transfer strong,.ah-team-transfer small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;}.ah-team-transfer small{font-size:10px;color:var(--muted);margin-top:5px;}.ah-team-transfer .an-symbol{font-size:22px;color:var(--cyan);}
+
+/* The free desktop canvas has no visual-container height: anchor the handoff explicitly. */
+@media(min-width:801px){
+ body.graph-home .home-agent-workflow{position:fixed;inset:22% max(24px,calc((100vw - 720px)/2)) auto;height:clamp(260px,42dvh,390px);z-index:80;border:1px solid color-mix(in srgb,var(--cyan) 32%,var(--line));box-shadow:0 24px 90px #0005,0 0 50px color-mix(in srgb,var(--cyan) 8%,transparent);backdrop-filter:blur(24px);padding:28px 70px;}
+ body.graph-home .home-graph-hero.has-agent-workflow .home-orb-layer.dc-element{z-index:81!important;width:64px!important;height:64px!important;left:auto!important;right:max(34px,calc((100vw - 700px)/2))!important;top:calc(22% + 10px)!important;margin:0!important;}
+ body.graph-home .home-agent-workflow .ah-node .an-symbol{width:72px;height:72px;border-radius:24px;box-shadow:0 10px 30px #0004;}
+ body.graph-home .home-agent-workflow .ah-node strong{font-size:14px;}
+}
+.home-agent-workflow.is-handoff .ah-track{position:relative;height:2px;opacity:1;overflow:visible;}
+.home-agent-workflow.is-handoff .ah-track:after{content:'';position:absolute;top:-3px;width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 14px var(--cyan);animation:ah-transfer 1.8s ease-in-out infinite;}
+@keyframes ah-transfer{from{left:0;opacity:0}30%{opacity:1}to{left:100%;opacity:0}}
+@media(prefers-reduced-motion:reduce){.home-agent-workflow.is-handoff .ah-track:after{animation:none;left:50%;}}
+
+/* Home uses the same full constellation and travelling character as the Agents page. */
+body.graph-home .home-agent-workflow{gap:8px;padding:16px;overflow:hidden;}
+.home-live-network{width:100%;min-height:0;flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.home-live-network .an-scroll{flex:1;min-height:0!important;max-height:none!important;height:100%!important;overflow:auto;}
+.home-live-network .an-preview-controls,.home-live-network .an-detail{display:none!important;}
+.home-live-network .an-heading{flex:none;}
+.home-live-network .an-legend{flex:none;max-height:48px;overflow:auto;}
+@media(min-width:801px){body.graph-home .home-agent-workflow{inset:12% 8% 13%;height:auto;max-height:none;}.home-live-network{padding:12px!important;}}
+@media(max-width:800px){body.graph-home .home-agent-workflow{position:fixed;inset:100px 12px 100px;z-index:80;height:auto;}.home-live-network .an-heading{flex-wrap:wrap;}.home-live-network .an-node{font-size:12px;}}
+
+body.graph-home:has(.home-agent-workflow) #jPanel{display:none!important;}
+
+@keyframes ah-home-focus{from{opacity:0;transform:scale(.92);filter:blur(5px)}to{opacity:1;transform:scale(1);filter:blur(0)}}
+.home-agent-workflow.is-handoff{animation:ah-home-focus .7s cubic-bezier(.16,1,.3,1);transform-origin:50% 45%;}
+@media(prefers-reduced-motion:reduce){.home-agent-workflow.is-handoff{animation:none!important;}}
+
+/* Return into the existing home conversation; never alter its saved canvas bounds. */
+@media(min-width:801px){body.graph-home.home-handoff-returned #view #jPanel{position:fixed!important;left:var(--reply-x,calc(50% - 310px))!important;top:var(--reply-y,65dvh)!important;right:auto!important;bottom:auto!important;width:min(620px,calc(100vw - 24px))!important;height:auto!important;max-height:calc(100dvh - var(--reply-y,65dvh) - 16px)!important;transform:none!important;background:var(--bg2)!important;border:1px solid var(--line)!important;border-radius:20px!important;overflow:auto!important;z-index:50!important}body.graph-home.home-handoff-returned #jPanel .jlog{max-height:20dvh;min-height:0}body.graph-home.home-handoff-returned #jPanel .j-welcome,body.graph-home.home-handoff-returned #jPanel header>div:first-child{display:none}}
+
+@media(min-width:801px){body.graph-home.home-handoff-returned #view #jPanel{background:transparent!important;border:0!important;box-shadow:none!important}body.graph-home.home-handoff-returned #jPanel header{background:transparent;border:0;justify-content:flex-end}}

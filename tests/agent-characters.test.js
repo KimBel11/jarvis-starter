@@ -1,0 +1,5 @@
+const test=require('node:test'),assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs');
+const context={window:{addEventListener(){}},document:{addEventListener(){}},setInterval(){}};vm.runInNewContext(fs.readFileSync(require('node:path').join(__dirname,'../public/agent-characters.js'),'utf8'),context);const c=context.window.JarvisCharacters;
+test('explicit character survives role changes',()=>{assert.equal(c.chosen({id:'writer',role:'Code engineer',glyph:'🦉'}),'🦉');});
+test('different responsibilities receive distinct characters',()=>{assert.equal(c.recommend({id:'kim'}),'🧚');assert.equal(c.recommend({role:'Course lead'}),'🦉');assert.equal(c.recommend({role:'App engineer'}),'🤖');assert.equal(c.recommend({role:'Council: reviewer'}),'🐲');assert.equal(c.recommend({role:'Assignment partner'}),'🐱');});
+test('gallery produces eight distinct safe vectors',()=>{const drawings=c.list.map(x=>c.svg(x[0]));assert.equal(new Set(drawings).size,8);for(const s of drawings){assert.match(s,/<svg/);assert.doesNotMatch(s,/<script|onload=|href=/);}assert.equal(c.svg('<script>'),'');});

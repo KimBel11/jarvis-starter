@@ -1,0 +1,64 @@
+.an-panel{border:1px solid var(--line);border-radius:24px;padding:20px;margin-bottom:24px;background:radial-gradient(ellipse at 50% 5%,#8c6fed12,transparent 60%),var(--panel);overflow:hidden}.an-heading{display:flex;align-items:center;justify-content:space-between;gap:14px}.an-heading strong{font-size:18px}.an-heading small{display:block;color:var(--muted);margin-top:5px}.an-heading select{max-width:45%;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:8px}.an-legend{display:flex;flex-wrap:wrap;gap:14px;color:var(--muted);font-size:11px;margin:18px 0}.an-legend span:first-child{color:var(--cyan)}.an-scroll{overflow:auto;max-height:740px;scrollbar-width:thin}.an-stage{position:relative;margin:auto;background:radial-gradient(circle,#8992b41c 1px,transparent 1px);background-size:24px 24px}.an-stage>svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.an-wire{stroke:#838ca839;stroke-width:1.4;fill:none}.an-shared{stroke:#8992b43d;stroke-dasharray:4 7;fill:none}.an-pulse{fill:none;stroke-width:2.8;stroke-dasharray:8 90;animation:an-transfer 2.2s linear infinite;filter:drop-shadow(0 0 4px currentColor)}.an-node{position:absolute;transform:translate(-50%,-50%);width:190px;min-height:100px;display:grid;justify-items:center;gap:7px;padding:14px 10px;color:var(--text);border:1px solid color-mix(in srgb,var(--an-color) 40%,var(--line));border-radius:18px;background:linear-gradient(155deg,color-mix(in srgb,var(--an-color) 12%,var(--panel)),var(--panel));box-shadow:0 9px 0 -3px color-mix(in srgb,var(--an-color) 18%,var(--panel)),0 15px 30px #0003;cursor:pointer;transition:box-shadow .2s,translate .2s,border-color .2s}.an-node strong{font-size:12px;overflow-wrap:anywhere}.an-node small{font-size:11px;color:var(--muted)}.an-symbol{color:var(--an-color);font-size:23px}.an-node:hover,.an-node:focus-visible,.an-node[aria-pressed=true]{translate:0 -4px;border-color:var(--an-color);box-shadow:0 9px 0 -3px color-mix(in srgb,var(--an-color) 30%,var(--panel)),0 0 28px color-mix(in srgb,var(--an-color) 20%,transparent)}.an-node.is-working .an-symbol{animation:an-breathe 2s ease-in-out infinite}.an-node.is-working small{color:var(--an-color)}.an-main{width:220px}.an-detail{padding:16px;margin-top:12px;border-top:1px solid var(--line);font-size:13px;overflow-wrap:anywhere}.an-detail p{margin:8px 0}.an-detail small{color:var(--muted)}.an-event{display:block;white-space:pre-wrap;max-height:80px;overflow:auto;margin:8px 0}.an-compact{padding:0;border:0;margin:0;background:none}.an-compact .an-heading{display:none}.an-compact .an-scroll{max-height:380px}.an-compact .an-legend{gap:8px;font-size:10px}.an-compact .an-node{width:170px}.an-compact .an-detail{padding:10px 0}.device-access-list{display:grid;gap:10px}.device-access-row{display:flex;gap:12px;align-items:center;padding:14px;border:1px solid var(--line);border-radius:14px}.device-access-row>div{flex:1;min-width:0;overflow-wrap:anywhere}.device-access-row small{display:block;color:var(--muted);margin-top:6px}.device-code{font-size:25px;letter-spacing:.18em;font-variant-numeric:tabular-nums;padding:16px;border:1px solid var(--line);border-radius:12px;margin:10px 0}@keyframes an-transfer{to{stroke-dashoffset:-196}}@keyframes an-breathe{50%{filter:drop-shadow(0 0 8px var(--an-color));transform:translateY(-3px)}}@media(prefers-reduced-motion:reduce){.an-pulse,.an-node.is-working .an-symbol{animation:none}.an-node{transition:none}}@media(max-width:600px){.an-panel{padding:12px}.an-heading{align-items:start}.an-heading strong{font-size:16px}.device-access-row{flex-wrap:wrap}}
+
+/* Full-page agent workspace, with controls tucked into a selected agent. */
+body:has(.team-workspace) main{max-width:none!important;width:100%;}
+#view.team-workspace{max-width:none!important;width:100%;padding:20px clamp(12px,2vw,36px);box-sizing:border-box;}
+.team-workspace>.hello{margin-bottom:14px}.team-workspace>.hello .sub{max-width:850px}
+.team-workspace>#agentNetworkPanel{margin-top:12px;min-height:calc(100dvh - 180px);box-sizing:border-box;}
+.team-workspace .an-scroll{height:calc(100dvh - 300px);min-height:380px;max-height:none;}
+.team-workspace #agentNetworkPanel>.an-detail{display:none}
+.team-workspace>.team-create{margin:0 0 0 auto;display:block;}
+.team-inspector{position:fixed;z-index:160;right:16px;top:64px;bottom:20px;width:min(520px,calc(100vw - 32px));background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:22px;box-shadow:0 24px 90px #0009;overflow:auto;overscroll-behavior:contain;box-sizing:border-box;}
+.team-inspector>header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px;position:sticky;top:0;background:var(--panel);z-index:2;border-bottom:1px solid var(--line)}
+.team-inspector-content{padding:16px;display:grid;gap:16px}.team-inspector-content>*{min-width:0}.team-inspector .card,.team-inspector .acard{margin:0;width:auto}.team-inspector .eb-row{flex-wrap:wrap}.team-inspector select{max-width:100%}.team-inspector .briefing-control{flex-wrap:wrap}.team-live-detail{font-size:13px;overflow-wrap:anywhere}.team-live-detail p{margin:8px 0}.team-live-detail .btn{margin:6px 8px 6px 0}
+@media(max-width:600px){#view.team-workspace{padding:12px}.team-workspace .an-scroll{height:65dvh}.team-inspector{right:8px;width:calc(100vw - 16px);top:55px;bottom:12px}.team-workspace .an-heading{flex-wrap:wrap}}
+
+.team-workspace>.hello{padding-top:0!important;min-height:0!important}.team-workspace>.hello .sub{font-size:12px}.team-workspace>.team-create{margin-top:0;margin-bottom:0}.team-workspace .an-heading{min-height:40px}
+
+/* Project overview: readable groups instead of crossing every agent's wire. */
+.an-stage.an-overview{width:100%;height:auto;background:none;display:flex;flex-direction:column;gap:22px;}
+.an-overview .an-node{position:relative;left:auto;top:auto;transform:none;width:100%;min-height:84px;box-shadow:none;padding:12px;display:grid;grid-template-columns:32px minmax(0,1fr);gap:4px 10px;text-align:left;justify-items:start;align-content:center;border-radius:14px;}
+.an-overview .an-node .an-symbol{grid-row:span 2;align-self:center}.an-overview .an-node strong{font-size:12px;line-height:1.4}.an-overview .an-node small{font-size:11px}
+.an-coordinator{display:flex;justify-content:center;position:relative;padding:4px 0 16px;}
+.an-coordinator:after{content:'';position:absolute;bottom:-10px;left:50%;height:25px;width:1px;background:var(--cyan)}
+.an-overview .an-coordinator .an-node{max-width:280px;min-height:90px;border-color:var(--cyan);background:linear-gradient(125deg,color-mix(in srgb,var(--cyan) 14%,var(--panel)),var(--panel))}
+.an-overview-caption{font-size:12px;color:var(--muted);text-align:center;margin:0 auto;max-width:700px}
+.an-project-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:18px;align-items:start;padding:2px;}
+.an-project-group{min-width:0;padding:16px;border:1px solid var(--line);border-radius:20px;background:color-mix(in srgb,var(--panel2) 65%,transparent);}
+.an-group-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.an-group-heading strong{font-size:14px}.an-group-heading small{display:block;color:var(--muted);font-size:11px;margin-top:5px}.an-group-heading .btn{white-space:nowrap}
+.an-group-agents{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.an-group-more{margin-top:12px}.an-group-more summary{cursor:pointer;color:var(--muted);font-size:12px;padding:8px 0}.an-group-more .an-group-agents{margin-top:8px}
+.team-workspace .an-scroll.an-overview-scroll{height:auto;min-height:0;overflow:visible}.team-workspace:has(.an-overview) #agentNetworkPanel{min-height:0}
+.team-lower-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:22px;align-items:start}.team-lower-grid>*{min-width:0}.team-task-section>.sec-h{margin-top:0}.team-task-section #teamTasks{overflow-x:auto}.team-task-section table{width:100%}.team-task-section .ell{white-space:normal;overflow-wrap:anywhere}.team-lower-grid #routeGuide{margin:0!important}.team-lower-grid .card-h{flex-wrap:wrap;gap:12px}.team-lower-grid .route-row{min-width:0}.team-lower-grid .route-m{flex-wrap:wrap}
+@media(min-width:1200px){.team-lower-grid{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)}}
+@media(max-width:480px){.an-project-group{padding:12px}.an-group-agents{grid-template-columns:1fr}.an-heading select{max-width:100%;width:100%}.team-lower-grid .sec-h{flex-wrap:wrap}.team-task-section th,.team-task-section td{padding:10px 7px;font-size:12px}.an-overview .an-node{min-height:68px}}
+/* Shared fluid layout primitives, without changing custom canvases or overlays. */
+.grid>*{min-width:0}.card{min-width:0}.card input:not([type=checkbox]):not([type=radio]),.card select,.card textarea{max-width:100%;box-sizing:border-box}
+@media(min-width:1600px){#view:not(.team-workspace)>.grid.g2{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){#view>.grid.g2,#view>.grid.g3{grid-template-columns:minmax(0,1fr)}}
+
+.an-overview .an-node{grid-template-columns:44px minmax(0,1fr)}.an-overview .an-node .an-symbol{width:38px;height:38px;font-size:21px;box-sizing:border-box}.an-overview .an-node strong{word-break:normal}
+
+/* Balance adjacent panels without clipping rows or hiding access to tasks. */
+.team-task-section{display:flex;flex-direction:column;gap:12px;box-sizing:border-box;padding:20px;border:1px solid var(--line);border-radius:20px;background:var(--panel);}
+.team-task-section>.sec-h{margin:0!important;gap:12px;flex-wrap:wrap}.team-task-section #teamTasks{margin:0;min-height:0;flex:1;border:0;border-radius:10px;box-shadow:none;}
+#teamTasks tr[hidden]{display:none!important}.team-task-toggle{flex-shrink:0;align-self:stretch;min-height:40px!important;background:color-mix(in srgb,var(--cyan) 6%,var(--panel))!important;border:1px solid var(--line)!important;}
+.team-task-toggle[hidden]{display:none!important}.team-lower-grid #routeGuide{padding:20px;border-radius:20px}.team-lower-grid{gap:20px}.team-lower-grid h2{line-height:1.35}
+@media(max-width:600px){.team-task-section,.team-lower-grid #routeGuide{padding:14px}.team-lower-grid{gap:16px}}
+/* Shared card headers wrap cleanly, with consistent room for their actions. */
+.card>.card-h{gap:12px;flex-wrap:wrap}.card>.card-h>h2,.card>.card-h>h3{min-width:0;overflow-wrap:anywhere}.grid{row-gap:20px}.sec-h{column-gap:12px}
+@media(max-width:600px){.card>.card-h{row-gap:10px}.sec-h{flex-wrap:wrap;row-gap:10px}}
+
+.an-navigation{display:flex;align-items:center;gap:12px;margin:12px 0}.an-navigation select{min-width:0;max-width:100%;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:12px;padding:10px}.an-navigation small{color:var(--muted)}
+@media(max-width:800px){
+ #view.team-workspace{width:100%!important;min-width:0;padding:12px!important;overflow-x:clip}
+ .team-workspace #agentNetworkPanel{min-height:0;width:100%;padding:12px;box-sizing:border-box}
+ .team-workspace .an-heading{display:flex;flex-wrap:wrap;gap:10px}.team-workspace .an-heading>div{flex:1 0 100%;text-align:center}.team-workspace .an-heading select{flex:1;min-width:0;max-width:100%;width:auto}
+ .team-workspace .an-heading button,.team-workspace select{min-height:44px}
+ .team-workspace .an-preview-controls{display:flex;flex-wrap:wrap;gap:8px}.team-workspace .an-preview-controls select{width:100%;max-width:100%;min-width:0;flex:1 0 100%}
+ .team-workspace .an-navigation{flex-direction:column;align-items:stretch}.team-workspace .an-navigation small{text-align:center;font-size:11px}
+ .team-workspace .an-legend{gap:8px;max-height:78px;overflow:auto;font-size:10px}
+ .team-workspace .an-scroll{height:55dvh;min-height:280px;max-width:100%;overscroll-behavior:contain;border-radius:14px;border:1px solid var(--line);-webkit-overflow-scrolling:touch}
+}
+
+.an-preview-drawer{margin-top:12px;border:1px solid var(--line);border-radius:12px}.an-preview-drawer>summary{cursor:pointer;padding:12px 14px;color:var(--muted);font-size:12px}.an-preview-drawer .an-preview-controls{margin:0;border:0}.an-preview-drawer:not([open])>.an-preview-controls{display:none}

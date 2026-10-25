@@ -1,0 +1,14 @@
+'use strict';
+const test=require('node:test'),assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs'),path=require('node:path');
+const source=fs.readFileSync(path.join(__dirname,'../public/agent-handoff.js'),'utf8');
+function fixture(){const listeners={},timers=[];const window={addEventListener:(n,f)=>{(listeners[n]??=[]).push(f);},dispatchEvent:e=>(listeners[e.type]||[]).forEach(f=>f(e))};const document={querySelector:()=>null,querySelectorAll:()=>[]};vm.runInNewContext(source,{window,document,Date,Set,Map,Event,matchMedia:()=>({matches:false}),setTimeout:(fn,ms)=>{timers.push({fn,ms});return timers.length;},clearTimeout:()=>{},requestAnimationFrame:fn=>fn()});return{fire:(n,d)=>(listeners[n]||[]).forEach(f=>f({detail:d})),timers};}
+const task=(id,by='kim',at=Date.now())=>({id:'task:'+id,taskId:id,source:'task',assignedBy:by,createdAt:at,agent:{id:'engineer'},title:'Test'});
+test('initial snapshot never replays historical assignments',()=>{const f=fixture();f.fire('jarvis:watch',{items:[task('old')]});assert.equal(f.timers.length,0);});
+test('new coordinator assignment animates once across updates',()=>{const f=fixture();f.fire('jarvis:watch',{items:[]});f.fire('jarvis:watch',{items:[task('one')]});assert.equal(f.timers.length,2);f.fire('jarvis:watch',{items:[task('one')]});f.fire('jarvis:assignment',{id:'one',agent:'engineer'});assert.equal(f.timers.length,2);});
+test('manual tasks and stale reconnect items do not invent a handoff',()=>{const f=fixture();f.fire('jarvis:watch',{items:[]});f.fire('jarvis:watch',{items:[task('manual','user'),task('stale','kim',Date.now()-60000)]});assert.equal(f.timers.length,0);});
+test('cancel suppresses a pending team animation',()=>{const f=fixture();f.fire('jarvis:assignment',{id:'one',agent:'engineer'});f.fire('jarvis:cancel');assert.doesNotThrow(()=>f.timers.find(t=>t.ms===800).fn());});
+
+test('home handoff leaves time for 3D and cancellation prevents delayed rendering',()=>{const f=fixture();f.fire('jarvis:graph-request');f.fire('jarvis:assignment',{id:'home',agent:'engineer'});const transition=f.timers.find(t=>t.ms>3100&&t.ms<=3200);assert.ok(transition,'3D gets its opening phase');f.fire('jarvis:cancel');assert.doesNotThrow(()=>transition.fn());});
+
+test('live task feed reaches the home handoff when SSE assignment was missed',()=>{const f=fixture();f.fire('jarvis:watch',{items:[]});f.fire('jarvis:graph-request');f.fire('jarvis:watch',{items:[task('live')]});assert.ok(f.timers.some(t=>t.ms>3100&&t.ms<=3200));});
+test('starting another request does not leave the assignment queue stuck',()=>{const f=fixture();f.fire('jarvis:graph-request');f.fire('jarvis:assignment',{id:'first',agent:'engineer'});f.fire('jarvis:graph-request');const before=f.timers.length;f.fire('jarvis:assignment',{id:'second',agent:'engineer'});assert.ok(f.timers.length>before);});

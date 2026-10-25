@@ -1,0 +1,72 @@
+/* Home-page approval cards. Flat, no shadows; uses the app's colour variables so light and dark both match the composer and the agent windows. */
+.ap-root{position:fixed;z-index:80;top:calc(120px + env(safe-area-inset-top));right:16px;width:min(420px,calc(100vw - 24px));max-height:calc(100vh - 150px);display:flex;flex-direction:column;gap:8px;pointer-events:none;font-size:13px;color:var(--text)}
+.ap-root[hidden],.ap-bar[hidden],.ap-root [hidden]{display:none!important}
+.ap-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.ap-stack{display:flex;flex-direction:column;gap:8px;min-height:0;overflow-y:auto;overscroll-behavior:contain;pointer-events:none;padding:1px}
+
+.ap-bar{pointer-events:auto;display:flex;align-items:center;gap:8px;align-self:flex-start}
+.ap-badge{display:inline-grid;place-items:center;min-width:24px;height:24px;padding:0 7px;border-radius:999px;background:var(--warn);color:#1a1200;font-weight:700;font-size:12px;font-variant-numeric:tabular-nums}
+.ap-barbtn{height:32px;padding:0 12px;border-radius:999px;border:1px solid var(--line2);background:var(--panel);color:var(--text);font-size:12px;font-weight:600;cursor:pointer}
+.ap-barbtn:hover{background:var(--panel2)}
+
+.ap-card{--agent:var(--cyan);pointer-events:auto;background:var(--panel);color:var(--text);border:1px solid color-mix(in srgb,var(--warn) 55%,var(--line2));border-radius:20px;overflow:hidden;animation:ap-in .16s ease-out}
+.ap-card[data-risk=sensitive]{border-color:color-mix(in srgb,var(--bad) 45%,var(--warn))}
+.ap-card[data-result=approved]{border-color:color-mix(in srgb,var(--good) 60%,var(--line2))}
+.ap-card[data-result=declined],.ap-card[data-result=handled]{border-color:var(--line2)}
+.ap-card:focus-within{border-color:color-mix(in srgb,var(--cyan) 60%,var(--line2))}
+@keyframes ap-in{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+
+.ap-head{display:flex;align-items:center;gap:10px;padding:10px 8px 10px 14px;background:var(--panel2)}
+.ap-card[data-collapsed] .ap-head{cursor:pointer}
+.ap-dot{flex:none;width:9px;height:9px;border-radius:50%;background:var(--warn)}
+.ap-card[data-result=approved] .ap-dot{background:var(--good)}
+.ap-titles{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;line-height:1.25}
+.ap-agent{font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ap-task{font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ap-tag{flex:none;height:24px;display:inline-flex;align-items:center;padding:0 9px;border-radius:999px;border:1px solid var(--line2);font-size:11px;font-weight:600;white-space:nowrap}
+.ap-tag[data-level=sensitive]{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 12%,var(--panel))}
+.ap-tag[data-level=local]{border-color:color-mix(in srgb,var(--cyan) 50%,var(--line2))}
+.ap-tag[data-level=done]{border-color:color-mix(in srgb,var(--good) 55%,var(--line2))}
+.ap-ib{flex:none;display:grid;place-items:center;width:32px;height:32px;padding:0;border-radius:10px;border:1px solid transparent;background:transparent;color:var(--muted);font-size:15px;cursor:pointer}
+.ap-ib:hover{color:var(--text);background:var(--bg2);border-color:var(--line2)}
+
+.ap-body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:8px}
+.ap-body p,.ap-body ul{margin:0}
+.ap-engine{font-size:11px;color:var(--muted)}
+.ap-sum{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;white-space:pre-line;overflow-wrap:anywhere;text-wrap:pretty;line-height:1.4}
+.ap-will-h{font-size:10px;font-weight:700;text-transform:uppercase;color:var(--muted)}
+.ap-will{padding-left:18px;display:flex;flex-direction:column;gap:2px}
+.ap-card[data-risk=sensitive] .ap-will li:first-child{font-weight:600}
+.ap-cost{font-weight:600;font-variant-numeric:tabular-nums}
+.ap-full{max-height:min(40vh,320px);overflow:auto;padding:10px 12px;border-radius:14px;border:1px solid var(--line2);background:var(--panel2)}
+.ap-full-txt{white-space:pre-wrap;overflow-wrap:anywhere;text-wrap:pretty;font-size:12px;line-height:1.45}
+.ap-msg{padding:8px 10px;border-radius:12px;border:1px solid var(--line2);font-size:12px}
+.ap-msg[data-k=warn]{border-color:var(--warn);background:color-mix(in srgb,var(--warn) 10%,var(--panel))}
+.ap-msg[data-k=bad]{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 10%,var(--panel))}
+.ap-msg[data-k=good]{border-color:var(--good);background:color-mix(in srgb,var(--good) 10%,var(--panel));font-weight:600}
+.ap-lab{display:block;margin-bottom:4px;font-size:11px;color:var(--muted)}
+.ap-reason{width:100%;box-sizing:border-box;height:38px;padding:0 12px;border-radius:12px;border:1px solid var(--line2);background:var(--bg2);color:var(--text);font:inherit}
+.ap-reason:focus-visible{outline:2px solid var(--cyan);outline-offset:1px}
+.ap-decline{display:flex;flex-direction:column}
+.ap-decline .ap-row{margin-top:8px}
+
+.ap-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.ap-actions{margin-top:2px}
+.ap-btn{height:38px;padding:0 16px;border-radius:12px;border:1px solid var(--line2);background:var(--bg2);color:var(--text);font:inherit;font-weight:600;cursor:pointer}
+.ap-btn.small{height:32px;padding:0 12px;font-size:12px}
+.ap-btn:hover{background:var(--panel2)}
+.ap-btn.primary{border-color:transparent;background:var(--cyan);color:#04101a}
+.ap-btn.primary:hover{background:color-mix(in srgb,var(--cyan) 86%,#fff)}
+.ap-btn.primary.confirm{background:var(--warn);color:#1a1200}
+.ap-btn.danger{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 14%,var(--bg2))}
+.ap-btn:disabled{opacity:.55;cursor:not-allowed}
+.ap-ib:focus-visible,.ap-btn:focus-visible,.ap-barbtn:focus-visible,.ap-full:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+
+@media (max-width:800px){
+  .ap-root{top:calc(60px + env(safe-area-inset-top));left:12px;right:12px;width:auto;max-height:calc(100vh - 130px)}
+  .ap-btn{height:46px;flex:1 1 auto}
+  .ap-btn.small{height:44px}
+  .ap-ib{width:44px;height:44px}
+  .ap-reason{height:46px;font-size:16px}
+}
+@media (prefers-reduced-motion:reduce){.ap-card{animation:none}}

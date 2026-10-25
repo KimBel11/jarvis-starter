@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#07090d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Jarvis">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Jarvis — User's Command Center</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230b0e14'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%232dd4ee' stroke-width='2.5'/%3E%3Ccircle cx='16' cy='16' r='2.5' fill='%232dd4ee'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="motion.css">
+<link rel="stylesheet" href="home.css">
+<link rel="stylesheet" href="ws.css">
+<link rel="stylesheet" href="clean.css">
+<link rel="stylesheet" href="visual.css">
+<link rel="stylesheet" href="mobile.css">
+<link rel="stylesheet" href="usage-overview.css">
+<link rel="stylesheet" href="cloudflare.css">
+<link rel="stylesheet" href="academy.css">
+<link rel="stylesheet" href="knowledge.css">
+<link rel="stylesheet" href="navigation.css">
+<link rel="stylesheet" href="graph-space.css">
+<link rel="stylesheet" href="graph-workspace.css">
+<link rel="stylesheet" href="/premium-ui.css">
+<link rel="stylesheet" href="/appearance.css">
+<link rel="stylesheet" href="/orb-experience.css">
+<link rel="stylesheet" href="/lead-selector.css">
+<link rel="stylesheet" href="/tool-workspace.css">
+<link rel="stylesheet" href="/connection-health.css">
+<link rel="stylesheet" href="mobile-repairs.css">
+<link rel="stylesheet" href="study-program.css">
+<link rel="stylesheet" href="desktop-clean.css">
+<link rel="stylesheet" href="desktop-atmosphere.css">
+<link rel="stylesheet" href="desktop-widgets.css">
+<link rel="stylesheet" href="phone-widgets.css">
+<link rel="stylesheet" href="notifications.css">
+<link rel="stylesheet" href="queue.css">
+<link rel="stylesheet" href="composer.css">
+<link rel="stylesheet" href="recent-chats.css">
+<link rel="stylesheet" href="copy-message.css">
+<link rel="stylesheet" href="task-watch.css">
+<link rel="stylesheet" href="approval-cards.css">
+<link rel="stylesheet" href="agent-network.css">
+<link rel="stylesheet" href="agent-handoff.css">
+<link rel="stylesheet" href="layout-finish.css">
+<link rel="stylesheet" href="mobile-simple.css">
+</head>
+<body>
+<div class="ambient" aria-hidden="true"><i></i><i></i><i></i></div>
+<aside class="side">
+  <div class="brand"><canvas class="brand-orb" id="brandOrb"></canvas><div><b>JARVIS</b><small>User's command center</small></div></div>
+  <nav id="nav"></nav>
+  <div class="side-foot">
+    <div id="agentStatus"></div>
+    <div id="indexStatus" class="muted tiny"></div>
+  </div>
+</aside>
+<main>
+  <header class="top">
+    <div id="crumb"></div>
+    <div class="top-actions">
+      <input id="search" type="search" placeholder="Search projects, files, sessions, skills…  ( / )" autocomplete="off">
+      <button class="btn" id="btnRefresh" title="Rescan projects and usage">↻ Refresh</button>
+      <button class="btn primary" id="btnNew" aria-label="New project"><span class="ic">＋</span><span class="lbl"> New project</span></button>
+    </div>
+  </header>
+  <div id="view" class="view"></div>
+</main>
+<div id="modal" class="modal" hidden></div>
+<div id="toast" class="toast" hidden></div>
+<script src="orb.js"></script>
+<script src="app.js"></script>
+<script src="jarvis.js"></script>
+<script src="pages.js"></script>
+<script src="workspace.js"></script>
+<script src="social.js"></script>
+<script src="study.js"></script>
+<script src="agent-characters.js"></script>
+<script src="agent-editor.js"></script>
+<script src="obsidian-ui.js"></script>
+<script src="documents.js"></script>
+<script src="council.js"></script>
+<script src="convos.js"></script>
+<script src="status.js"></script>
+<script src="access.js"></script>
+<script src="tools.js"></script>
+<script src="extras.js"></script>
+<script src="models.js"></script>
+<script src="socialq.js"></script>
+<script src="composer.js"></script>
+<script src="recent-chats.js"></script>
+<script src="copy-message.js"></script>
+<script src="team-focus.js"></script>
+<script src="obsidian-graph.js"></script>
+<script src="social-live.js"></script>
+<script src="progress.js"></script>
+<script src="usage-overview.js"></script>
+<script src="accounts.js"></script>
+<script src="control.js"></script>
+<script src="cloudflare.js"></script>
+<script src="academy.js"></script>
+<script src="skills-ui.js"></script>
+<script src="navigation.js"></script>
+<script src="video-skills-ui.js"></script>
+<script src="graph-space.js"></script>
+<script src="graph-workspace.js"></script>
+<script src="appearance.js"></script>
+<script src="orb-experience.js"></script>
+<script src="lead-selector.js"></script>
+<script src="tool-workspace.js"></script>
+<script src="desktop-workspace-ui.js"></script>
+<script src="connection-health.js"></script>
+<script>new Orb(document.getElementById("brandOrb"))</script>
+<script src="study-program.js"></script>
+<script src="agent-network.js"></script>
+<script src="device-access.js"></script>
+<script src="desktop-widgets.js"></script>
+<script src="home-shortcuts.js"></script>
+<script src="phone-widgets.js"></script>
+<script src="desktop-clean.js"></script>
+<script src="desktop-atmosphere.js"></script>
+<script src="appearance-sync.js"></script>
+<script src="notifications.js"></script>
+<script src="reply-audio.js"></script>
+<script src="queue.js"></script>
+<script src="task-watch.js"></script>
+<script src="dock-attention.js"></script>
+<script src="agent-handoff.js"></script>
+<script src="activity-center.js"></script>
+<script src="approval-cards.js"></script>
+<script src="team-workspace.js"></script>
+<script src="mobile-simple.js"></script>
+<script src="glasses-history.js"></script>
+</body>
+</html>

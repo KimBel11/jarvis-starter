@@ -1,0 +1,21 @@
+.phone-widgets{display:none;}
+@media(max-width:800px){
+ .phone-widgets{display:block;margin:24px auto 0;padding:16px 0 110px;width:100%;box-sizing:border-box;}
+ .phone-widgets[hidden]{display:none;}
+ .pw-toolbar{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:12px;}.pw-toolbar h2{font-size:18px;margin:0;}
+ .pw-button{min-height:44px;padding:10px 14px;border:1px solid var(--line);border-radius:12px;color:var(--text);background:var(--panel);font:inherit;font-size:12px;touch-action:manipulation;}
+ .pw-status,.pw-help{font-size:12px;color:var(--muted);text-align:center;line-height:1.6;margin:12px 0;}
+ .pw-add{display:flex;gap:10px;justify-content:center;}.pw-add select{min-width:0;max-width:70%;border:1px solid var(--line);border-radius:12px;background:var(--panel);color:var(--text);padding:10px;font-size:16px;}
+ .pw-list{display:grid;gap:20px;}.pw-slot{position:relative;min-width:0;}
+ .phone-widgets .desktop-widget{box-sizing:border-box;position:relative;max-width:100%;max-height:none;min-width:0;overflow:auto;}
+ .phone-widgets .dw-header{min-height:44px;}.pw-editing .dw-header{cursor:grab;user-select:none;}
+ .pw-controls{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0;padding:12px;border:1px solid var(--line);border-radius:16px;background:var(--panel);}
+ .pw-controls label{display:grid;gap:8px;font-size:12px;color:var(--muted);width:100%;}.pw-controls input{width:100%;min-height:32px;accent-color:var(--cyan);}
+ .pw-resize{position:absolute;right:0;top:calc(var(--pw-height) - 44px);touch-action:none;font-size:22px;z-index:3;}
+ .pw-dragging{z-index:4;outline:2px solid var(--cyan);box-shadow:0 14px 36px #0007;}
+ .phone-widgets .dw-project-info{display:grid;min-width:0;gap:5px;}.phone-widgets .dw-project-monogram{display:none;}
+}
+@media(max-width:800px){
+ .pw-toolbar{position:sticky;top:calc(58px + env(safe-area-inset-top));z-index:12;padding:10px;border:1px solid var(--line);border-radius:16px;background:var(--panel);box-shadow:0 8px 24px #0003;}
+ .pw-button:focus-visible,.pw-add select:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;}
+}
